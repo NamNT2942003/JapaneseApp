@@ -20,7 +20,7 @@ function App() {
     <div className="app-container">
       <header className="app-header">
         <div className="header-content">
-          <h1>日本語 文法</h1>
+          <h1>Sổ tay ghi nhớ tiếng Nhật của Nam</h1>
           <p>Japanese Grammar Handbook</p>
           
           <div className="search-bar">
