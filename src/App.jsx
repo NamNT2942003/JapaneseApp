@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { grammarData } from './data';
 import CategoryList from './components/CategoryList';
+import VocabPage from './components/VocabPage';
+import BottomNav from './components/BottomNav';
 import './App.css';
+import './vocab.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('grammar'); // 'grammar' or 'vocab'
 
   // Filter grammar data based on search term
   const filteredData = grammarData.map(category => {
@@ -23,34 +27,43 @@ function App() {
           <h1>Sổ tay ghi nhớ tiếng Nhật của Nam</h1>
           <p>Japanese Grammar Handbook</p>
           
-          <div className="search-bar">
-            <span className="search-icon">🔍</span>
-            <input 
-              type="text" 
-              placeholder="Tìm kiếm ngữ pháp..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+          {activeTab === 'grammar' && (
+            <div className="search-bar">
+              <span className="search-icon">🔍</span>
+              <input 
+                type="text" 
+                placeholder="Tìm kiếm ngữ pháp..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          )}
         </div>
         <div className="header-decoration"></div>
       </header>
 
       <main className="app-main">
-        {filteredData.length > 0 ? (
-          filteredData.map((category) => (
-            <CategoryList key={category.id} category={category} />
-          ))
+        {activeTab === 'grammar' ? (
+          filteredData.length > 0 ? (
+            filteredData.map((category) => (
+              <CategoryList key={category.id} category={category} />
+            ))
+          ) : (
+            <div className="no-results">
+              <p>Không tìm thấy ngữ pháp phù hợp.</p>
+            </div>
+          )
         ) : (
-          <div className="no-results">
-            <p>Không tìm thấy ngữ pháp phù hợp.</p>
-          </div>
+          <VocabPage />
         )}
       </main>
 
-      <footer className="app-footer">
+      {/* Adjust footer to not overlap with bottom nav */}
+      <footer className="app-footer" style={{ paddingBottom: '80px' }}>
         <p>Built with ❤️ for Japanese Learners</p>
       </footer>
+
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 }
